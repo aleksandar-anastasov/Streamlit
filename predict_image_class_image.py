@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Nov 26 10:34:06 2021
-
+​
 @author: Ana
 """
-
+​
 import tensorflow as tf
 import streamlit as st
 from PIL import Image
-import requests
-import urllib
 import numpy as np
 import cv2
-
-
+​
+​
 # Model is cached when loaded first time in order to use the object next time
 @st.cache(allow_output_mutation=True)
-# def load_model(path = 'D:/BRAINSTER/Streamlit app/best_model_mobile.pt'):
-def load_model(path = 'C:/Users/Lenovo/Desktop/Streamlit_workshop/Ana/best_model_mobile.pt'): 
+def load_model(path = 'best_model_mobile.pt'):
     '''
     Loads pretrained model into memory.
     
@@ -26,8 +23,8 @@ def load_model(path = 'C:/Users/Lenovo/Desktop/Streamlit_workshop/Ana/best_model
     A Keras model instance.
     '''
     return tf.keras.models.load_model(path)
-
-
+​
+​
 def url_to_image(image):
     '''
     Reads image from url and performs preprocessing.
@@ -43,17 +40,17 @@ def url_to_image(image):
     image : image
       Original image.
     '''
-
+​
     image = np.array(image)
     # Resize the image to required input shape by the model
     image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image_resized  = cv2.resize(image_gray, (224,224))
     # Scale image pixels from 0 to 1 
     image_resized = image_resized/255.0
-
+​
     return image_resized, image 
-
-
+​
+​
 def get_prediction(image, model, class_names):
     '''
     Predicts image class.
@@ -74,7 +71,7 @@ def get_prediction(image, model, class_names):
     prediction = np.argmax(model.predict(image))
       
     return class_names[prediction]
-
+​
 def main():
     # Disable streamlit comments and warnings
     st.set_option('deprecation.showfileUploaderEncoding', False)
